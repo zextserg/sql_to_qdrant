@@ -8,16 +8,19 @@ For example you have a standart SQL Database with table **posts** with key colum
 - `oranges with apples are like lemons`
 
 And you want to search substrings by just simple query: `apples AND oranges AND NOT tomatos`  
-Or you want to make complex query, but don't want to trace all `like '%...%'` parts, you just want to search by query: `(apples AND oranges) OR (tomatos AND (lemons OR mint))`
+Or you want to make complex query, but don't want to trace all `like '%...%'` parts, you just want to search by query:  
+`(apples AND oranges) OR (tomatos AND (lemons OR mint))`
 
 So, this script help you to convert such queries to SQL query with proper WHERE Clause.
 With using func **convert_init_query_to_proper_sql_where_clause(init_query, key)** you can convert for example:  
 `apples AND oranges AND NOT tomatos`  
 to  
-`SELECT * FROM posts WHERE ( text ILIKE '%apples%' AND text ILIKE '%oranges%' AND text NOT ILIKE '%tomatos%')`  
+`SELECT * FROM posts WHERE ( text ILIKE '%apples%' AND text ILIKE '%oranges%' AND text NOT ILIKE '%tomatos%')`   
+
+\* - func argument **key** -  it's a name of your text column in SQL DB
 
 ## Part 2. SQL to Qdrant Filters
-Then, if you have your data in Qdrant Database (@qdrant) and also want to search by exact match as substring of some text field, my script can convert your query to proper Qdrant Filters.  
+Then, if you have your data in [Qdrant](https://github.com/qdrant) Database and also want to search by exact match as substring of some text field, my script can convert your query to proper Qdrant Filters.  
 For that case you can use func **convert_sql_where_to_qdrant_filters(sql_where_clause, res_type='json', make_lowercase=False)** which return 2 types of result: as `json` or as `Python Qdrant Filter models`  
 
 For example you can convert:  
@@ -76,4 +79,7 @@ Here is a list of test queries and which results (answers) should be found in te
 - `'apples AND (NOT tomatos OR lemons) AND (oranges AND NOT mint)',  # answer ids: 3`
 - `'(apples AND oranges) OR (tomatos AND (lemons OR mint))', # answer ids: 2,3,6`
 - `'oranges AND (NOT lemons OR potato) AND (mint AND NOT (apples OR tomatos))', # answer ids: 4`
-- `'apples AND NOT all AND (lemons OR potato OR (oranges AND NOT (tomatos OR mint)))' # answer ids: 1,3`
+- `'apples AND NOT all AND (lemons OR potato OR (oranges AND NOT (tomatos OR mint)))' # answer ids: 1,3`  
+
+\* - if you sure have all data in Qdrant text field in lowercase or you create [Qdrant full-text index](https://qdrant.tech/articles/qdrant-introduces-full-text-filters-and-indexes/#full-text-search-behaviour-on-an-indexed-payload-field) with lowercase param  
+you can set func argument **make_lowercase** to True and all data inside Filetrs values will be lowercased in results
