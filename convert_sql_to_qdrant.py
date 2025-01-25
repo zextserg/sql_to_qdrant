@@ -573,7 +573,7 @@ if __name__ == '__main__':
         'apples AND oranges', # answer ids: 3,6
         'tomatos OR mint', # answer ids: 2,4,5,6
         'apples AND oranges AND NOT tomatos', # answer ids: 3
-        'all OR (oranges AND mint)', # answer ids: 4,6
+        'potato OR (oranges AND mint)', # answer ids: 4,6
         'apples AND (NOT tomatos OR lemons) AND (oranges AND NOT mint)',  # answer ids: 3
         '(apples AND oranges) OR (tomatos AND (lemons OR mint))', # answer ids: 2,3,6
         'oranges AND (NOT lemons OR potato) AND (mint AND NOT (apples OR tomatos))', # answer ids: 4
